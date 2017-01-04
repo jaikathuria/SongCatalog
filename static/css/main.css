@@ -1,4 +1,4 @@
-body{
+.bg{
     background-size: cover;
     background-attachment: fixed;
     content: '';
@@ -14,24 +14,43 @@ body{
        (max-width: 512px)  and (min-resolution: 1.5dppx),
        (max-width: 1024px) and (-webkit-max-device-pixel-ratio: 1.5),
        (max-width: 1024px) and (max-resolution: 1.5dppx) {
-  body{
-    background-image: url('../images/bg1024.jpg');
+  #bg1{
+    background-image: url('../images/bg1-1024.jpg');
+  }
+
+  #bg2{
+    background-image: url('../images/bg2-1024.jpg');        
+  }
+  #bg3{
+    background-image: url('../images/bg3-1024.jpg');        
   }
 }
 @media (min-width: 513px)  and (max-width: 1024px) and (-webkit-min-device-pixel-ratio: 1.5),
        (min-width: 513px)  and (max-width: 1024px) and (min-resolution: 1.5dppx),
        (min-width: 1025px) and (max-width: 2048px) and (-webkit-max-device-pixel-ratio: 1.5),
        (min-width: 1025px) and (max-width: 2048px) and (max-resolution: 1.5dppx)  {
-  body{
-    background-image: url('../images/bg2048.jpg');
+  #bg1{
+    background-image: url('../images/bg1-2048.jpg');
+  }
+  #bg2{
+    background-image: url('../images/bg2-2048.jpg');
+  }
+  #bg3{
+    background-image: url('../images/bg3-2048.jpg');
   }
 }
 @media (min-width: 1025px) and (-webkit-min-device-pixel-ratio: 1.5),
        (min-width: 1025px) and (min-resolution: 1.5dppx),
        (min-width: 2049px) and (-webkit-max-device-pixel-ratio: 1.5),
        (min-width: 2049px) and (max-resolution: 1.5dppx) {
-  body{
-    background-image: url('../images/bg2880.jpg');
+  #bg1{
+    background-image: url('../images/bg1-2880.jpg');
+  }
+  #bg2{
+    background-image: url('../images/bg1-2880.jpg');
+  }
+  #bg3{
+    background-image: url('../images/bg1-2880.jpg');
   }
 }
 .margin-top-10 {
@@ -40,4 +59,30 @@ body{
 
 .margin-top-5 {
     margin-top: 5vh;
+}
+
+.translusent-black {
+    background-color: rgba(0,0,0,0.5);
+}
+
+
+
+.f-200 {
+    font-weight: 200;
+}
+
+.translusent-white {
+    background-color: rgba(255,255,255,.25);
+}
+
+.translusent-black-text {
+    color: rgba(0,0,0,.5);
+}
+
+.no-margin {
+    margin: 0px;
+}
+
+.f-300 {
+    font-weight: 300;
 }
