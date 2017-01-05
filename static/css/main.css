@@ -64,6 +64,9 @@
 .translusent-black {
     background-color: rgba(0,0,0,0.5);
 }
+.translusent-black.darken-1 {
+    background-color: rgba(0,0,0,.8);
+}
 
 
 
@@ -74,9 +77,12 @@
 .translusent-white {
     background-color: rgba(255,255,255,.25);
 }
+.translusent-white.darken-1 {
+    background-color: rgba(255,255,255,.75);
+}
 
 .translusent-black-text {
-    color: rgba(0,0,0,.5);
+    color: rgba(0,0,0,.5) !important;
 }
 
 .no-margin {
@@ -85,4 +91,22 @@
 
 .f-300 {
     font-weight: 300;
+}
+
+.no-block {
+    display: inline-block
+}
+
+.menu{
+    height: 48px;
+    width: 48px;
+    top: 20px;
+    left: 20px;
+    padding-top: 4px;
+}
+.menu:hover{
+    background-color: rgba(255,255,255,.5);
+}
+.menu:focus{
+    background-color: rgba(255,255,255,.5);
 }
