@@ -7022,6 +7022,7 @@ input[type=range]:focus::-ms-fill-upper {
   bottom: 0;
   left: 0;
   z-index: -1;
+  background-color: rgba(0,0,0,.75);
 }
 
 .side-nav .userView .circle, .side-nav .userView .name, .side-nav .userView .email {

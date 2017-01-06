@@ -81,7 +81,7 @@
     background-color: rgba(255,255,255,.65);
 }
 .translusent-white.darken-2 {
-    background-color: rgba(255,255,255,.85);
+    background-color: rgba(255,255,255,.8);
 }
 
 .translusent-black-text {
@@ -112,4 +112,16 @@
 }
 .menu:focus{
     background-color: rgba(255,255,255,.5);
+}
+
+.translusent-facebook {
+    background-color: rgba(59,89,152,0.7);
+}
+
+.translusent-gplus {
+    background-color: rgba(211, 72, 54,0.70);
+}
+
+.f-100 {
+    font-weight: 100 !important;
 }
