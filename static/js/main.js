@@ -20,5 +20,7 @@ $(document).ready(function(){
         $(this).toggleClass('z-depth-4').toggleClass('z-depth-1');
         
     });
+    
+     $('select').material_select();
 
  });

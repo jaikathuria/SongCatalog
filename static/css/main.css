@@ -18,12 +18,6 @@
     background-image: url('../images/bg1-1024.jpg');
   }
 
-  #bg2{
-    background-image: url('../images/bg2-1024.jpg');        
-  }
-  #bg3{
-    background-image: url('../images/bg3-1024.jpg');        
-  }
 }
 @media (min-width: 513px)  and (max-width: 1024px) and (-webkit-min-device-pixel-ratio: 1.5),
        (min-width: 513px)  and (max-width: 1024px) and (min-resolution: 1.5dppx),
@@ -32,12 +26,7 @@
   #bg1{
     background-image: url('../images/bg1-2048.jpg');
   }
-  #bg2{
-    background-image: url('../images/bg2-2048.jpg');
-  }
-  #bg3{
-    background-image: url('../images/bg3-2048.jpg');
-  }
+           
 }
 @media (min-width: 1025px) and (-webkit-min-device-pixel-ratio: 1.5),
        (min-width: 1025px) and (min-resolution: 1.5dppx),
@@ -46,12 +35,7 @@
   #bg1{
     background-image: url('../images/bg1-2880.jpg');
   }
-  #bg2{
-    background-image: url('../images/bg1-2880.jpg');
-  }
-  #bg3{
-    background-image: url('../images/bg1-2880.jpg');
-  }
+
 }
 .margin-top-10 {
     margin-top: 10vh;
@@ -63,6 +47,9 @@
 
 .translusent-black {
     background-color: rgba(0,0,0,0.5);
+}
+.btn-floating.translusent-black:hover{
+    background-color: rgba(0,0,0,0.6);
 }
 .translusent-black.darken-1 {
     background-color: rgba(0,0,0,.7);
@@ -133,3 +120,37 @@
 .no-height {
     height: auto;
 }
+
+.padding-top-5 {
+    padding-top: 5vh;
+}
+
+.input-field label {
+     color: rgba(0,0,0,0.8);
+}
+
+/* label focus color */
+.input-field input[type=text]:focus + label {
+ color: rgba(0,0,0,0.8);
+}
+/* label underline focus color */
+.input-field input[type=text]:focus {
+ border-bottom: 1px solid rgba(0,0,0,0.8);
+ box-shadow: 0 1px 0 0 rgba(0,0,0,0.8);
+}
+/* valid color */
+.input-field input[type=text].valid {
+ border-bottom: 1px solid rgba(0,0,0,0.8);
+ box-shadow: 0 1px 0 0 rgba(0,0,0,0.8);
+}
+/* invalid color */
+.input-field input[type=text].invalid {
+ border-bottom: 1px solid rgba(0,0,0,0.8);
+ box-shadow: 0 1px 0 0 rgba(0,0,0,0.8);
+}
+/* icon prefix focus color */
+.input-field .prefix.active {
+ color: rgba(0,0,0,0.8);
+}
+
+        

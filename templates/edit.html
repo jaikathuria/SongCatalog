@@ -28,35 +28,41 @@
                 <a  href="#login" class="menu btn-floating waves-effect waves-ripple translusent-white z-depth-5 translusent-black-text"><i class="translusent-black-text fa fa-venus-mars" aria-hidden="true"></i></a>
 
 		<div class="container margin-top-5">
-			<div class="row margin-top-5">
-				<div class="col m8 offset-m2 s12">
-					<div class="card-panel translusent-white z-depth-5 center-align">
-						<h4 class="translusent-black-text no-margin">Category</h4>
+		 <form action="menu.html">
+			<div class="row">
+				<div class="col m8 offset-m2 s12 card-panel translusent-white z-depth-5 ">
+				    <div class="row margin-top-5">
+                        <div class="input-field col s12 m6 offset-m3">
+                            <select>
+                              <option value="" disabled selected class="translusent-black">Category</option>
+                              <option value="1">Option 1</option>
+                              <option value="2">Option 2</option>
+                              <option value="3">Option 3</option>
+                              <option value="4">Option 4</option>
+                              <option value="5">Option 5</option>
+                              <option value="6">Option 6</option>
+                            </select>
+                        </div>
+                         <div class="input-field col s12 m6 offset-m3">
+                          <input id="name" type="text" class="validate">
+                          <label for="name">Name</label>
+                        </div>
+                        <div class="input-field col s12 m6 offset-m3">
+                          <input id="desc" type="text" class="validate">
+                          <label for="desc">Description</label>
+                        </div>
+                        <div class="input-field col s12 m6 offset-m3">
+                          <input id="url" type="text" class="validate">
+                          <label for="url">URL (YouTube Video)</label>
+                        </div>
+                        <div class="col m6 offset-m3 s12">
+                            <button type="submit" class="btn-floating btn-large waves-effect waves-light translusent-black"><i class="fa fa-magic" aria-hidden="true"></i></button>
+                        </div>
 					</div>
-					<div class="card-panel translusent-white z-depth-5">
-						<div class="row white-text f-200">
-							<div class="col s6">
-                                <a href="category.html"><div class="card-panel z-depth-4 translusent-black ani-shadow white-text"><span>Cat Bla Bla</span></div></a>
-							</div>
-							<div class="col s6">
-                                <a href="category.html"><div class="card-panel z-depth-4 translusent-black ani-shadow white-text"><span>Cat Bla Bla</span></div></a>
-							</div>
-							<div class="col s6">
-                                <a href="category.html"><div class="card-panel z-depth-4 translusent-black ani-shadow white-text"><span>Cat Bla Bla</span></div></a>
-							</div>
-							<div class="col s6">
-                                <a href="category.html"><div class="card-panel z-depth-4 translusent-black ani-shadow white-text"><span>Cat Bla Bla</span></div></a>
-							</div>
-							<div class="col s6">
-                                <a href="category.html"><div class="card-panel z-depth-4 translusent-black ani-shadow white-text"><span>Cat Bla Bla</span></div></a>
-							</div>
-							<div class="col s6">
-                                <a href="category.html"><div class="card-panel z-depth-4 translusent-black ani-shadow white-text"><span>Cat Bla Bla</span></div></a>
-							</div>
-						</div>
-					</div>
+					
 				</div>
 			</div>
+           </form>
 		</div>
 		<div id="login" class="modal bottom-sheet translusent-white darken-1">
           <div class="modal-content">
