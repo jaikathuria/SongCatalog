@@ -125,3 +125,7 @@
 .f-100 {
     font-weight: 100 !important;
 }
+
+.no-border {
+    border: 0px;
+}
