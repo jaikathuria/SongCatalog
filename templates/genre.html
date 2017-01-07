@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block title %} Song List {% endblock %}
+    {% block content %}
+		<div class="container margin-top-5">
+			<div class="row margin-top-5">
+				<div class="col m8 offset-m2 s12">
+					<div class="card-panel translusent-white z-depth-5 center-align">
+						<h4 class="translusent-black-text no-margin">{{ genre.name }}</h4>
+					</div>
+					<div class="card-panel translusent-white z-depth-5">
+						<div class="row white-text f-200">
+				            <ul class="collapsible popout" data-collapsible="accordion">
+                                {% for song in songs %}
+                                <li>
+                                   <div class="collapsible-header translusent-black no-border"><i class="fa fa-music f-100" aria-hidden="true"></i> {{song.name}} </div>
+                                   <div class="collapsible-body no-border white-text">
+                                      <p>{{ song.description }}<br><br>
+                                       <a class="white-text" href="{{ url_for('viewSong',g_id = genre.id ,s_id = song.id) }}"> <i class="fa fa-play-circle" aria-hidden="true"></i> Play </a> &nbsp;|&nbsp;
+                                       <a class="white-text" href="{{ url_for('editSong',g_id = genre.id,s_id = song.id) }}"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit </a> 
+                                       &nbsp;|&nbsp; 
+                                       <a class="white-text" href="{{ url_for('deleteSong',g_id = genre.id,s_id = song.id) }}"> <i class="fa fa-trash-o" aria-hidden="true"></i> Delete </a> 
+                                  </div>
+                                    
+                                </li>
+                                {% endfor %}
+                            </ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+      {% endblock %}
