@@ -1,59 +1,30 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<!--Import Font Awesome Icons -->
-		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-		<!--Import materialize.css-->
-		<link type="text/css" rel="stylesheet" href="../static/materialize/css/materialize.css"  media="screen,projection"/>
-		<link type="text/css" rel="stylesheet" href="../static/css/main.css">
-		<!--Let browser know website is optimized for mobile-->
-		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	</head>
-	<body>
-		<div class="bg" id="bg1"></div>
-		<ul id="slide-out" class="side-nav translusent-white darken-2 z-depth-3">
-			<li>
-				<div class="userView">
-				    <div class="background"></div>
-					<a href="#!user"><img class="circle" src="http://lorempixel.com/64/64/"></a>
-					<a href="#!name"><span class="white-text name">John Doe</span></a>
-					<a href="#!email"><span class="white-text email f-100">jdandturk@gmail.com</span></a>
-				</div>
-            </li>
-			<li><a href="edit.html" class="waves-effect"><i class="fa fa-plus-circle" aria-hidden="true"></i> New Item </a></li>
-			<li><a class="waves-effect" href="#!"> <i class="fa fa-power-off" aria-hidden="true"></i>Sign Out</a></li>
-		</ul>
-		
-                <a class="menu btn-floating waves-effect waves-light translusent-white button-collapse z-depth-5 translusent-black-text" data-activates="slide-out"><i class=" translusent-black-text fa fa-angle-right" aria-hidden="true"></i></a>
-                <a  href="#login" class="menu btn-floating waves-effect waves-ripple translusent-white z-depth-5 translusent-black-text"><i class="translusent-black-text fa fa-link" aria-hidden="true"></i></a>
-
+{% extends "layout.html" %}
+{% block title %} New Song {% endblock %}
+    {% block content %}
 		<div class="container margin-top-5">
-		 <form action="menu.html">
+		 <form action="{% if song %}{{ url_for('editSong',g_id=song.g_id,s_id = song.id) }}{% else %}{{ url_for('newSong') }}{% endif %}" method="post">
 			<div class="row">
 				<div class="col m8 offset-m2 s12 card-panel translusent-white z-depth-5 ">
 				    <div class="row margin-top-5">
                         <div class="input-field col s12 m6 offset-m3">
-                            <select>
-                              <option value="" disabled selected class="translusent-black">Category</option>
-                              <option value="1">Option 1</option>
-                              <option value="2">Option 2</option>
-                              <option value="3">Option 3</option>
-                              <option value="4">Option 4</option>
-                              <option value="5">Option 5</option>
-                              <option value="6">Option 6</option>
+                            <select required name="genre">
+                              <option value="" disabled {% if not song %}selected{% endif %} class="translusent-black"><sup>*</sup> Genre</option>
+                              {% for genre in genres %}
+                              <option value="{{ genre.id }}" {% if song and genre.id == song.g_id %}selected{% endif %}>{{ genre.name }}</option>
+                              {% endfor %}
                             </select>
                         </div>
                          <div class="input-field col s12 m6 offset-m3">
-                          <input id="name" type="text" class="validate">
-                          <label for="name">Name</label>
+                          <input id="name" name="name" type="text" class="validate" required autocomplete="off" value="{% if song %}{{song.name}}{% endif %}">
+                          <label for="name"><sup>*</sup> Name</label>
                         </div>
                         <div class="input-field col s12 m6 offset-m3">
-                          <input id="desc" type="text" class="validate">
+                          <input id="desc" name="desc" type="text" class="validate" autocomplete="off" value="{% if song %}{{song.description}}{% endif %}">
                           <label for="desc">Description</label>
                         </div>
                         <div class="input-field col s12 m6 offset-m3">
-                          <input id="url" type="text" class="validate">
-                          <label for="url">URL (YouTube Video)</label>
+                          <input id="url" type="text" class="validate" value="{% if song %}{{song.url}}{% endif %}" required name="url" autocomplete="off">
+                          <label for="url"><sup>*</sup> URL (YouTube Video)</label>
                         </div>
                         <div class="col m6 offset-m3 s12">
                             <button type="submit" class="btn-floating btn-large waves-effect waves-light translusent-black"><i class="fa fa-magic" aria-hidden="true"></i></button>
@@ -64,27 +35,4 @@
 			</div>
            </form>
 		</div>
-		<div id="login" class="modal bottom-sheet translusent-white darken-1">
-          <div class="modal-content">
-           <div class="container">
-             <div class="row">
-                 <div class="col m4 offset-m2 s12">
-                   <div class="card-panel translusent-facebook z-depth-5 center-align">
-                        <h5 class="white-text f-200 no-margin">Connect With &nbsp; <i class="fa fa-facebook" aria-hidden="true"></i></h5>
-                    </div>
-                  </div>
-                  <div class="col m4 s12">
-                  <div class="card-panel translusent-gplus z-depth-5 center-align">
-                        <h5 class="white-text f-200 no-margin">Connect With &nbsp; <i class="fa fa-google-plus" aria-hidden="true"></i></h5>
-                    </div>
-                  </div>
-               </div>
-            </div>
-          </div>
-        </div>
-		<!--Import jQuery before materialize.js-->
-		<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-		<script type="text/javascript" src="../static/materialize/js/materialize.js"></script>
-		<script type="text/javascript" src="../static/js/main.js"></script>
-	</body>
-</html>
+    {% endblock %}
