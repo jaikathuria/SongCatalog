@@ -25,6 +25,60 @@ def genreView(gid):
     genre = session.query(Genre).filter_by(id = gid).one()
     songList = session.query(Songs).filter_by(g_id = gid)
     return render_template('genre.html',songs = songList,genre = genre)
+
+@app.route('/new/',methods=['get','post'])
+def newSong():
+    if request.method == 'POST':
+        name = request.form['name']
+        desc = request.form['desc']
+        url =  request.form['url']
+        url = url.replace('watch?v=','embed/')
+        url = url.replace('https://','//')
+        g_id = request.form['genre']
+        if name and url and g_id:
+            song = Songs()
+            song.name = name
+            song.g_id = g_id
+            song.url = url
+            if desc:
+                song.description = desc
+            session.add(song)
+            session.commit()
+            return redirect(url_for('genreView',gid = g_id))
+        else:
+            return redirect(url_for('newSong',error='incompletefields'))
+    genreList = session.query(Genre).all()
+    return render_template('edit.html',genres = genreList)
+
+@app.route('/edit/g/<int:g_id>/s/<int:s_id>',methods=['get','post'])
+def editSong(g_id,s_id):
+    if request.method == 'POST':
+        name = request.form['name']
+        desc = request.form['desc']
+        url =  request.form['url']
+        url = url.replace('watch?v=','embed/')
+        url = url.replace('https://','//')
+        g_id = request.form['genre']
+        if name and url and g_id:
+            song = session.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
+            if song:
+                song.name = name
+                song.g_id = g_id
+                song.url = url
+                if desc:
+                    song.description = desc
+                session.add(song)
+                session.commit()
+                return redirect(url_for('genreView',gid = g_id))
+            else:
+                return redirect(url_for('genreListView',error = 'dataNotFound'))
+        else:
+            return redirect(url_for('newSong',error='incompleteFields'))
+    genreList = session.query(Genre).all()
+    song = session.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
+    return render_template('edit.html',genres = genreList,song = song)
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
