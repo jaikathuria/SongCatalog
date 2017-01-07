@@ -19,7 +19,6 @@ def genreListView():
     genreList = session.query(Genre).all()
     return render_template('genreList.html',genres = genreList)
 
-
 @app.route('/genre/<int:gid>/')
 def genreView(gid):
     genre = session.query(Genre).filter_by(id = gid).one()
@@ -78,6 +77,25 @@ def editSong(g_id,s_id):
     song = session.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
     return render_template('edit.html',genres = genreList,song = song)
 
+@app.route('/delete/g/<int:g_id>/s/<int:s_id>')
+def deleteSong(g_id,s_id):
+    song = session.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
+    if song:
+        session.delete(song)
+        session.commit()
+        return redirect(url_for('genreView',gid = g_id))
+    else:
+        return redirect(url_for('genreListView',error = 'dataNotFound'))
+    
+    
+@app.route('/view/g/<int:g_id>/s/<int:s_id>')
+def viewSong(g_id,s_id):
+    song = session.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
+    if song:
+        return render_template('view.html',song = song)
+    else:
+        return redirect(url_for('genreListView',error = 'dataNotFound'))
+        
 
 if __name__ == '__main__':
     app.debug = True
