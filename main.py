@@ -19,6 +19,12 @@ def genreListView():
     genreList = session.query(Genre).all()
     return render_template('genreList.html',genres = genreList)
 
+
+@app.route('/genre/<int:gid>/')
+def genreView(gid):
+    genre = session.query(Genre).filter_by(id = gid).one()
+    songList = session.query(Songs).filter_by(g_id = gid)
+    return render_template('genre.html',songs = songList,genre = genre)
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
