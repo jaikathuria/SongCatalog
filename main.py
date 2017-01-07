@@ -14,7 +14,10 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind = engine)
 session = DBSession()
 
-       
+@app.route('/')
+def genreListView():
+    genreList = session.query(Genre).all()
+    return render_template('genreList.html',genres = genreList)
 
 if __name__ == '__main__':
     app.debug = True
