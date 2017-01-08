@@ -2,7 +2,7 @@
 {% block title %} New Song {% endblock %}
     {% block content %}
 		<div class="container margin-top-5">
-		 <form action="{% if song %}{{ url_for('editSong',g_id=song.g_id,s_id = song.id) }}{% else %}{{ url_for('newSong') }}{% endif %}" method="post">
+		 <form action="{% if song %}{{ url_for('editSong',g_id=song.g_id,s_id=song.id) }}{% else %}{{ url_for('newSong') }}{% endif %}" method="post">
 			<div class="row">
 				<div class="col m8 offset-m2 s12 card-panel translusent-white z-depth-5 ">
 				    <div class="row margin-top-5">
