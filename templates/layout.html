@@ -56,5 +56,17 @@
 		<script src="https://apis.google.com/js/platform.js" async defer></script>
 		<script type="text/javascript" src="{{ url_for('static',filename = 'materialize/js/materialize.js') }}"></script>
 		<script type="text/javascript" src="{{ url_for('static',filename = 'js/main.js') }}"></script>
+		<script>
+             gapi.signin.render("mySignIn", {
+              'clientid': '212153352565-f1ti6kcpb65frgfv2uatthhdukdsjtmd.apps.googleusercontent.com',
+              //'callback': signinCallback,
+              'cookiepolicy': 'single_host_origin', 
+              'requestvisibleactions': 'http://schemas.google.com/AddActivity',
+              'scope': 'openid email',
+              'redirecturi': 'postmessage',
+              'accesstype': 'offline',
+              'approvalprompt': 'force'
+            });
+        </script>
 	</body>
 </html>
