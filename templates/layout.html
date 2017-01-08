@@ -43,7 +43,7 @@
                     </div>
                   </div>
                   <div class="col m4 s12">
-                  <div class="card-panel translusent-gplus z-depth-5 center-align">
+                  <div id="googleSignIn" class="card-panel translusent-gplus z-depth-5 center-align">
                         <h5 class="white-text f-200 no-margin">Connect With  <i class="fa fa-google-plus" aria-hidden="true"></i></h5>
                     </div>
                   </div>
@@ -57,7 +57,7 @@
 		<script type="text/javascript" src="{{ url_for('static',filename = 'materialize/js/materialize.js') }}"></script>
 		<script type="text/javascript" src="{{ url_for('static',filename = 'js/main.js') }}"></script>
 		<script>
-             gapi.signin.render("mySignIn", {
+             gapi.signin.render("googleSignIn", {
               'clientid': '212153352565-f1ti6kcpb65frgfv2uatthhdukdsjtmd.apps.googleusercontent.com',
               //'callback': signinCallback,
               'cookiepolicy': 'single_host_origin', 
