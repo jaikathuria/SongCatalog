@@ -1,7 +1,7 @@
 # Imports Flask
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 app = Flask(__name__)
-
+import random, string
 
 # Import SQLAlchemy
 from sqlalchemy import create_engine
@@ -96,7 +96,13 @@ def viewSong(g_id,s_id):
     else:
         return redirect(url_for('genreListView',error = 'dataNotFound'))
         
-
+@app.route('/login')
+def showLogin():
+    state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
+    session['state'] = state
+    return session['state']
+    
 if __name__ == '__main__':
+    app.secret_key = 'itstimetomoveon'
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
