@@ -69,7 +69,13 @@ var googleSignInCallback = function(authResult){
             contentType: 'application/json',
             data: authResult['code'],
             success: function(result){
-                
+                if(result){
+                    var img = result['img'].replace('https','http');
+                    console.log(img);
+                    hide.login();
+                    $('#userImg').attr('src',img);
+                    $('#userName').html(result['name']);
+                    $('#userEmail').html(result['email']);
                 }
                 else if (authResult['error']){
                     console.log("Following Error Occured:" + authResult['error']);
