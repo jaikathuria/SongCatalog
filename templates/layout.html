@@ -18,9 +18,9 @@
 			<li>
 				<div class="userView">
 				    <div class="background"></div>
-					<a href="#!user"><img class="circle" src="http://lorempixel.com/64/64/"></a>
-					<a href="#!name"><span class="white-text name">John Doe</span></a>
-					<a href="#!email"><span class="white-text email f-100">jdandturk@gmail.com</span></a>
+					<a><img id="userImg" src="" class="circle"></a>
+					<a><span id="userName" class="white-text name"></span></a>
+					<a><span id="userEmail" class="white-text email f-100"></span></a>
 				</div>
             </li>
 			<li><a href="{{ url_for('newSong') }}" class="waves-effect"><i class="fa fa-plus-circle" aria-hidden="true"></i> New Item </a></li>
@@ -28,7 +28,7 @@
 		</ul>
 		
                 <a class="menu btn-floating waves-effect waves-light translusent-white button-collapse z-depth-5 translusent-black-text" data-activates="slide-out"><i class=" translusent-black-text fa fa-angle-right" aria-hidden="true"></i></a>
-                <a  href="#login" class="menu btn-floating waves-effect waves-ripple translusent-white z-depth-5 translusent-black-text"><i class="translusent-black-text fa fa-link" aria-hidden="true"></i></a>
+                <a  href="#login" id="loginbtn" class="menu btn-floating waves-effect waves-ripple translusent-white z-depth-5 translusent-black-text"><i class="translusent-black-text fa fa-link" aria-hidden="true"></i></a>
 
 		{% block content %}
 		
@@ -52,21 +52,10 @@
           </div>
         </div>
 		<!--Import jQuery before materialize.js-->
+        <script> var state = '{{state}}'</script>
 		<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 		<script src="https://apis.google.com/js/platform.js"></script>
 		<script type="text/javascript" src="{{ url_for('static',filename = 'materialize/js/materialize.js') }}"></script>
 		<script type="text/javascript" src="{{ url_for('static',filename = 'js/main.js') }}"></script>
-		<script>
-             gapi.signin.render("googleSignIn", {
-              'clientid': '212153352565-f1ti6kcpb65frgfv2uatthhdukdsjtmd.apps.googleusercontent.com',
-              //'callback': signinCallback,
-              'cookiepolicy': 'single_host_origin', 
-              'requestvisibleactions': 'http://schemas.google.com/AddActivity',
-              'scope': 'openid email',
-              'redirecturi': 'postmessage',
-              'accesstype': 'offline',
-              'approvalprompt': 'force'
-            });
-        </script>
 	</body>
 </html>
