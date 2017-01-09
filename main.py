@@ -159,8 +159,11 @@ def gconnect():
     answer = requests.get(userinfo_url, params=params)
     
     data = answer.json()
-
-    return data 
+    session['name'] = data['name']
+    session['img'] = data['picture']
+    session['email'] = data['email']
+    
+    return jsonify(name = session['name'],email = session['email'], img = session['img'])     
 
 def create_state():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
