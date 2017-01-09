@@ -1,7 +1,12 @@
 # Imports Flask
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, make_response, jsonify
 app = Flask(__name__)
 import random, string
+
+from oauth2client.client import flow_from_clientsecrets, FlowExchangeError, AccessTokenCredentials 
+import httplib2
+import json
+import requests
 
 # Import SQLAlchemy
 from sqlalchemy import create_engine
@@ -14,10 +19,15 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind = engine)
 conn = DBSession()
 
+CLIENT_ID = json.loads(
+    open('client_secret.json', 'r').read())['web']['client_id']
+APPLICATION_NAME = "ItemCatalog"
+
 @app.route('/')
 def genreListView():
     genreList = conn.query(Genre).all()
-    return render_template('genreList.html',genres = genreList)
+    state  = create_state()
+    return render_template('genreList.html',genres = genreList, state = state)
 
 @app.route('/genre/<int:gid>/')
 def genreView(gid):
@@ -95,12 +105,13 @@ def viewSong(g_id,s_id):
         return render_template('view.html',song = song)
     else:
         return redirect(url_for('genreListView',error = 'dataNotFound'))
-        
-@app.route('/login')
-def showLogin():
+  
+
+def create_state():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
     session['state'] = state
-    return session['state']
+    return state
+
     
 if __name__ == '__main__':
     app.secret_key = 'itstimetomoveon'
