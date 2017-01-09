@@ -151,7 +151,7 @@ def gconnect():
                                  200)
         response.headers['Content-Type'] = 'application/json'
         return response
-    session['credentials'] = credentials
+    session['credentials'] = access_token
     session['gplus_id'] = gplus_id
     
     userinfo_url = "https://www.googleapis.com/oauth2/v1/userinfo"
@@ -159,11 +159,12 @@ def gconnect():
     answer = requests.get(userinfo_url, params=params)
     
     data = answer.json()
+
     session['name'] = data['name']
     session['img'] = data['picture']
     session['email'] = data['email']
     
-    return jsonify(name = session['name'],email = session['email'], img = session['img'])     
+    return jsonify(name = session['name'],email = session['email'], img = session['img'])        
 
 def create_state():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
