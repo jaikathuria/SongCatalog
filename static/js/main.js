@@ -50,4 +50,49 @@ $(document).ready(function(){
 
 
  });
+
+var hide = {
+    login: function(){
+        $('#login').modal('close');
+        $('#loginbtn').hide();  
+    },
+    user: function(){
+        
+    }
+}
+var googleSignInCallback = function(authResult){
+    if (authResult['code']){
+        $.ajax({
+            type: 'POST',
+            url: '/gconnet?state=' + state,
+            processData: false,
+            contentType: 'application/octet-stream; charset=utf-8',
+            data: authResult['code'],
+            success: function(result){
+                if(result){
+                    hide.login();
+                }
+                else if (authResult['error']){
+                    console.log("Following Error Occured:" + authResult['error']);
+                }
+                else{
+                    console.log('Faied to make connection with server, Please check your internet connection.');
+                }
+            }
+        });
+    }
+    
+};
+
+
+gapi.signin.render("googleSignIn", {
+              'clientid': '212153352565-f1ti6kcpb65frgfv2uatthhdukdsjtmd.apps.googleusercontent.com',
+              //'callback': signinCallback,
+              'cookiepolicy': 'single_host_origin', 
+              'requestvisibleactions': 'http://schemas.google.com/AddActivity',
+              'scope': 'openid email',
+              'redirecturi': 'postmessage',
+              'accesstype': 'offline',
+              'approvalprompt': 'force'
+});
  
