@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, m
 app = Flask(__name__)
 import random, string
 
-from oauth2client.client import flow_from_clientsecrets, FlowExchangeError, AccessTokenCredentials 
+from oauth2client.client import flow_from_clientsecrets, FlowExchangeError, AccessTokenCredentials
 import httplib2
 import json
 import requests
@@ -27,7 +27,7 @@ APPLICATION_NAME = "ItemCatalog"
 def genreListView():
     genreList = conn.query(Genre).all()
     state  = create_state()
-    return render_template('genreList.html',genres = genreList, state = state)
+    return render_template('genreList.html',genres = genreList, state = state,log = session.get('provider'))
 
 @app.route('/genre/<int:gid>/')
 def genreView(gid):
@@ -96,8 +96,8 @@ def deleteSong(g_id,s_id):
         return redirect(url_for('genreView',gid = g_id))
     else:
         return redirect(url_for('genreListView',error = 'dataNotFound'))
-    
-    
+
+
 @app.route('/view/g/<int:g_id>/s/<int:s_id>')
 def viewSong(g_id,s_id):
     song = conn.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
@@ -105,9 +105,9 @@ def viewSong(g_id,s_id):
         return render_template('view.html',song = song)
     else:
         return redirect(url_for('genreListView',error = 'dataNotFound'))
-  
+
 @app.route('/gconnect', methods = ['post'])
-def gconnect():
+def gConnect():
     if request.args.get('state') != session['state']:
         response.make_response(json.dumps('Invalid State paramenter'), 401)
         response.headers['Content-Type'] = 'application/json'
@@ -126,12 +126,12 @@ def gconnect():
            % access_token)
     header = httplib2.Http()
     result = json.loads(header.request(url, 'GET')[1])
-    
+
     if result.get('error') is not None:
         response = make_response(json.dumps(result.get('error')), 500)
         response.headers['Content-Type'] = 'application/json'
         return response
-    
+
     gplus_id = credentials.id_token['sub']
     if result['user_id'] != gplus_id:
         response = make_response(
@@ -143,7 +143,7 @@ def gconnect():
             json.dumps("Token's client ID does not match app's."), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
-    
+
     stored_credentials = session.get('credentials')
     stored_gplus_id = session.get('gplus_id')
     if stored_credentials is not None and gplus_id == stored_gplus_id:
@@ -153,25 +153,38 @@ def gconnect():
         return response
     session['credentials'] = access_token
     session['gplus_id'] = gplus_id
-    
+
     userinfo_url = "https://www.googleapis.com/oauth2/v1/userinfo"
     params = {'access_token': access_token, 'alt': 'json'}
     answer = requests.get(userinfo_url, params=params)
-    
+
     data = answer.json()
 
     session['name'] = data['name']
     session['img'] = data['picture']
     session['email'] = data['email']
-    
-    return jsonify(name = session['name'],email = session['email'], img = session['img'])        
+    session['provider'] = 'google'
+    return jsonify(name = session['name'],email = session['email'], img = session['img'])
+
+
+@app.route('/logout')
+def logout():
+    if session.get('provider') == 'google':
+        return Gdisconnect()
+
+
+
+#@app.route('/getData', methods=['post'])
+#def get_user_data()
+#
+#    return jsonify(name = session['name'],email = session['email'], img = session['img'])
 
 def create_state():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
     session['state'] = state
     return state
 
-    
+
 if __name__ == '__main__':
     app.secret_key = 'itstimetomoveon'
     app.debug = True
