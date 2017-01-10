@@ -9,7 +9,7 @@
 		<link type="text/css" rel="stylesheet" href="{{ url_for('static',filename = 'css/main.css') }} ">
 		<!--Let browser know website is optimized for mobile-->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		
+
 		<meta name="google-signin-client_id" content="212153352565-f1ti6kcpb65frgfv2uatthhdukdsjtmd.apps.googleusercontent.com">
 	</head>
 	<body>
@@ -24,14 +24,14 @@
 				</div>
             </li>
 			<li><a href="{{ url_for('newSong') }}" class="waves-effect"><i class="fa fa-plus-circle" aria-hidden="true"></i> New Item </a></li>
-			<li><a class="waves-effect" href="#!"> <i class="fa fa-power-off" aria-hidden="true"></i>Sign Out</a></li>
+			<li><a class="waves-effect" href="/logout"> <i class="fa fa-power-off" aria-hidden="true"></i>Sign Out</a></li>
 		</ul>
-		
-                <a class="menu btn-floating waves-effect waves-light translusent-white button-collapse z-depth-5 translusent-black-text" data-activates="slide-out"><i class=" translusent-black-text fa fa-angle-right" aria-hidden="true"></i></a>
+
+                <a id="sideNavbtn" class="menu btn-floating waves-effect waves-light translusent-white button-collapse z-depth-5 translusent-black-text" data-activates="slide-out"><i class=" translusent-black-text fa fa-angle-right" aria-hidden="true"></i></a>
                 <a  href="#login" id="loginbtn" class="menu btn-floating waves-effect waves-ripple translusent-white z-depth-5 translusent-black-text"><i class="translusent-black-text fa fa-link" aria-hidden="true"></i></a>
 
 		{% block content %}
-		
+
 		{% endblock %}
 		<div id="login" class="modal bottom-sheet translusent-white darken-1">
           <div class="modal-content">
