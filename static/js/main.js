@@ -1,11 +1,11 @@
 $('.button-collapse').sideNav({
-    
+
       menuWidth: 240, // Default is 240
-    
+
       edge: 'left', // Choose the horizontal origin
-    
+
       closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
-    
+
       draggable: true // Choose whether you can drag to open on touch screens
     }
   );
@@ -13,15 +13,15 @@ $('.button-collapse').sideNav({
 $(document).ready(function(){
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
     $('.modal').modal();
-     
+
     $('.ani-shadow').hover(function(){
-        
+
         $(this).toggleClass('z-depth-4').toggleClass('z-depth-1');
-        
+
     });
-    
+
      $('select').material_select();
-    
+
     function getQueryVariable(variable)
         {
                var query = window.location.search.substring(1);
@@ -39,13 +39,13 @@ $(document).ready(function(){
         };
 
         if(getQueryVariable('error')){
-            
+
             var error = errors[getQueryVariable('error')];
-            
+
              Materialize.toast(error, 10000);
-            
+
             console.log(error);
-            
+
         }
 
 
@@ -54,10 +54,10 @@ $(document).ready(function(){
 var hide = {
     login: function(){
         $('#login').modal('close');
-        $('#loginbtn').hide();  
+        $('#loginbtn').hide();
     },
     user: function(){
-        
+        $('#sideNavbtn')
     }
 }
 var googleSignInCallback = function(authResult){
@@ -86,18 +86,17 @@ var googleSignInCallback = function(authResult){
             }
         });
     }
-    
+
 };
 
 
 gapi.signin.render("googleSignIn", {
               'clientid': '212153352565-f1ti6kcpb65frgfv2uatthhdukdsjtmd.apps.googleusercontent.com',
               'callback': googleSignInCallback,
-              'cookiepolicy': 'single_host_origin', 
+              'cookiepolicy': 'single_host_origin',
               'requestvisibleactions': 'http://schemas.google.com/AddActivity',
               'scope': 'openid email',
               'redirecturi': 'postmessage',
               'accesstype': 'offline',
               'approvalprompt': 'force'
 });
- 
