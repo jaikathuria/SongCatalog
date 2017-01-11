@@ -18,13 +18,13 @@
 			<li>
 				<div class="userView">
 				    <div class="background"></div>
-					<a><img id="userImg" src="" class="circle"></a>
-					<a><span id="userName" class="white-text name"></span></a>
-					<a><span id="userEmail" class="white-text email f-100"></span></a>
+					<a><img id="userImg" src="{{ data[2]}}" class="circle"></a>
+					<a><span id="userName" class="white-text name">{{ data[0] }}</span></a>
+					<a><span id="userEmail" class="white-text email f-100">{{ data[1] }}</span></a>
 				</div>
-            </li>
+      </li>
 			<li><a href="{{ url_for('newSong') }}" class="waves-effect"><i class="fa fa-plus-circle" aria-hidden="true"></i> New Item </a></li>
-			<li><a class="waves-effect" href="/logout"> <i class="fa fa-power-off" aria-hidden="true"></i>Sign Out</a></li>
+			<li><a class="waves-effect" id="logout"> <i class="fa fa-power-off" aria-hidden="true"></i>Sign Out</a></li>
 		</ul>
 
                 <a id="sideNavbtn" class="menu btn-floating waves-effect waves-light translusent-white button-collapse z-depth-5 translusent-black-text" data-activates="slide-out"><i class=" translusent-black-text fa fa-angle-right" aria-hidden="true"></i></a>
@@ -52,7 +52,10 @@
           </div>
         </div>
 		<!--Import jQuery before materialize.js-->
-        <script> var state = '{{state}}'</script>
+    <script>
+				var state = '{{state}}'
+				var logged = {{ logged }}
+		</script>
 		<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 		<script src="https://apis.google.com/js/platform.js"></script>
 		<script type="text/javascript" src="{{ url_for('static',filename = 'materialize/js/materialize.js') }}"></script>
