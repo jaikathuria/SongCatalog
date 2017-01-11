@@ -27,13 +27,15 @@ APPLICATION_NAME = "ItemCatalog"
 def genreListView():
     genreList = conn.query(Genre).all()
     state  = create_state()
-    return render_template('genreList.html',genres = genreList, state = state,log = session.get('provider'))
+    name,email,img,logged = get_user_data()
+    return render_template('genreList.html',genres = genreList, state = state,data = [name,email,img],logged = logged)
 
 @app.route('/genre/<int:gid>/')
 def genreView(gid):
     genre = conn.query(Genre).filter_by(id = gid).one()
     songList = conn.query(Songs).filter_by(g_id = gid)
-    return render_template('genre.html',songs = songList,genre = genre)
+    name,email,img = get_user_data()
+    return render_template('genre.html',songs = songList,genre = genre,)
 
 @app.route('/new/',methods=['get','post'])
 def newSong():
@@ -167,17 +169,18 @@ def gConnect():
     return jsonify(name = session['name'],email = session['email'], img = session['img'])
 
 
-@app.route('/logout')
+@app.route('/logout', methods = ['post'])
 def logout():
     if session.get('provider') == 'google':
         return Gdisconnect()
 
 @app.route('/gdisconnect')
 def Gdisconnect():
+    print "gdisconnect"
     access_token = session['credentials']
     if access_token is None:
         print 'Access Token is None'
-        response = make_response(json.dumps('Current user not connected.'), 401)
+        response = make_response(json.dumps({'state' : 'notConnected'}), 401)
     	response.headers['Content-Type'] = 'application/json'
     	return response
     url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
@@ -192,19 +195,22 @@ def Gdisconnect():
         del session['email']
         del session['img']
         session['provider'] = 'null'
-        response = make_response(json.dumps('Sucessfully disconnected'),200)
+        response = make_response(json.dumps({'state': 'loggedOut'}),200)
         response.headers['Content-Type'] = 'application/json'
         return response
     else:
-        response = make_response(json.dumps('Failed to revoke the connection'),401)
+        response = make_response(json.dumps({'state': 'errorRevoke'}),401)
         response.headers['Content-Type'] = 'application/json'
         return response
 
 
-#@app.route('/getData', methods=['post'])
-#def get_user_data()
-#
-#    return jsonify(name = session['name'],email = session['email'], img = session['img'])
+def get_user_data():
+    if session.has_key('provider'):
+        if session['provider'] != 'null':
+            return session['name'], session['email'], session['img'], 1
+    return "", "", "", 0
+
+
 
 def create_state():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
