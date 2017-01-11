@@ -145,4 +145,6 @@ gapi.signin.render("googleSignIn", {
               'approvalprompt': 'force'
 });
 
-
+$('#logout').click(function(){
+    logout();
+});
