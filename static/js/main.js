@@ -1,3 +1,29 @@
+var hide = {
+    login: function(){
+        $('#login').modal('close');
+        $('#loginbtn').hide();
+        $('#sideNavbtn').show();
+    },
+    user: function(){
+        $('#sideNavbtn').hide();
+        $('#loginbtn').show();
+
+    }
+}
+if(logged){
+  hide.login();
+}
+else{
+  hide.user();
+}
+
+var messages = {
+    "dataNotFound": "Invalid Song Details!",
+    "incompleteFields": "Fill out all required fields!",
+    "notConnected": "User Already Disconnected",
+    "successLogout": "User Successfully Logged Out"
+};
+
 $('.button-collapse').sideNav({
 
       menuWidth: 240, // Default is 240
@@ -33,33 +59,18 @@ $(document).ready(function(){
                return(false);
         }
 
-        var errors = {
-            "dataNotFound": "Invalid Song Details!",
-            "incompleteFields": "Fill out all required fields!"
-        };
 
         if(getQueryVariable('error')){
 
-            var error = errors[getQueryVariable('error')];
+            var error = messages[getQueryVariable('error')];
 
              Materialize.toast(error, 10000);
-
-            console.log(error);
 
         }
 
 
  });
 
-var hide = {
-    login: function(){
-        $('#login').modal('close');
-        $('#loginbtn').hide();
-    },
-    user: function(){
-        $('#sideNavbtn')
-    }
-}
 var googleSignInCallback = function(authResult){
     if (authResult['code']){
         $.ajax({
@@ -71,24 +82,57 @@ var googleSignInCallback = function(authResult){
             success: function(result){
                 if(result){
                     var img = result['img'].replace('https','http');
-                    console.log(img);
                     hide.login();
                     $('#userImg').attr('src',img);
                     $('#userName').html(result['name']);
                     $('#userEmail').html(result['email']);
+                    logged = 1;
                 }
                 else if (authResult['error']){
                     console.log("Following Error Occured:" + authResult['error']);
                 }
                 else{
-                    console.log('Faied to make connection with server, Please check your internet connection.');
+                    console.log('Failed to make connection with server, Please check your internet connection.');
                 }
             }
         });
     }
-
 };
 
+var logout = function(){
+
+   if(logged){
+
+    $.ajax({
+
+      type: 'POST',
+      url: '/logout',
+      processData: false,
+      contentType: 'application/json',
+      success: function(result){
+        if(result['state'] == 'loggedOut'){
+          var error = messages['successLogout'];
+          Materialize.toast(error, 10000);
+          logged = 0;
+          hide.user();
+        }
+
+      },
+      error: function(er){
+          console.log(er['state']);
+      }
+
+    });
+
+   }
+   else{
+  
+      var error = messages['notConnected'];
+  
+      Materialize.toast(error, 10000);
+   }
+
+}
 
 gapi.signin.render("googleSignIn", {
               'clientid': '212153352565-f1ti6kcpb65frgfv2uatthhdukdsjtmd.apps.googleusercontent.com',
@@ -100,3 +144,5 @@ gapi.signin.render("googleSignIn", {
               'accesstype': 'offline',
               'approvalprompt': 'force'
 });
+
+
