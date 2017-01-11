@@ -26,18 +26,18 @@ var messages = {
 
 $('.button-collapse').sideNav({
 
-      menuWidth: 240, // Default is 240
+      menuWidth: 240,
 
-      edge: 'left', // Choose the horizontal origin
+      edge: 'left',
 
-      closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+      closeOnClick: true,
 
-      draggable: true // Choose whether you can drag to open on touch screens
+      draggable: true
     }
   );
 
 $(document).ready(function(){
-    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    
     $('.modal').modal();
 
     $('.ani-shadow').hover(function(){
@@ -126,9 +126,9 @@ var logout = function(){
 
    }
    else{
-  
+
       var error = messages['notConnected'];
-  
+
       Materialize.toast(error, 10000);
    }
 
