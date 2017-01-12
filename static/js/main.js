@@ -21,7 +21,8 @@ var messages = {
     "dataNotFound": "Invalid Song Details!",
     "incompleteFields": "Fill out all required fields!",
     "notConnected": "User Already Disconnected",
-    "successLogout": "User Successfully Logged Out"
+    "successLogout": "User Successfully Logged Out",
+    "notLogged" : "User Not Logged In"
 };
 
 $('.button-collapse').sideNav({
@@ -116,10 +117,15 @@ var logout = function(){
           logged = 0;
           hide.user();
         }
+        else if (result['state'] == 'notConnected'){
+          var error = messages['notConnected'];
+          Materialize.toast(error, 10000);
+        }
+        else if (result['state'] == 'errorRevoke'){
+          var error = messages['errorRevoke'];
+          Materialize.toast(error, 10000);
+        }
 
-      },
-      error: function(er){
-          console.log(er['state']);
       }
 
     });
