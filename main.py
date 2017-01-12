@@ -23,6 +23,17 @@ CLIENT_ID = json.loads(
     open('client_secret.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "ItemCatalog"
 
+def redirect_url(default='index'):
+    return request.args.get('next') or \
+           request.referrer or \
+           url_for(default)
+
+
+def previous_url(error=False):
+    if error:
+        return redirect_url() + "?error=" + error
+    return redirect_url()
+
 @app.route('/')
 def genreListView():
     genreList = conn.query(Genre).all()
@@ -34,8 +45,9 @@ def genreListView():
 def genreView(gid):
     genre = conn.query(Genre).filter_by(id = gid).one()
     songList = conn.query(Songs).filter_by(g_id = gid)
-    name,email,img = get_user_data()
-    return render_template('genre.html',songs = songList,genre = genre,)
+    state  = create_state()
+    name,email,img,logged = get_user_data()
+    return render_template('genre.html',songs = songList,genre = genre, state = state,data = [name,email,img],logged = logged)
 
 @app.route('/new/',methods=['get','post'])
 def newSong():
@@ -59,7 +71,9 @@ def newSong():
         else:
             return redirect(url_for('newSong',error='incompletefields'))
     genreList = conn.query(Genre).all()
-    return render_template('edit.html',genres = genreList)
+    state  = create_state()
+    name,email,img,logged = get_user_data()
+    return render_template('edit.html',genres = genreList, state = state,data = [name,email,img],logged = logged)
 
 @app.route('/edit/g/<int:g_id>/s/<int:s_id>',methods=['get','post'])
 def editSong(g_id,s_id):
@@ -85,9 +99,14 @@ def editSong(g_id,s_id):
                 return redirect(url_for('genreListView',error = 'dataNotFound'))
         else:
             return redirect(url_for('newSong',error='incompleteFields'))
-    genreList = conn.query(Genre).all()
-    song = conn.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
-    return render_template('edit.html',genres = genreList,song = song)
+    state  = create_state()
+    name,email,img,logged = get_user_data()
+    if(logged):
+        genreList = conn.query(Genre).all()
+        song = conn.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
+        return render_template('edit.html',genres = genreList,song = song,state = state,data = [name,email,img],logged = logged)
+    else:
+        return redirect(previous_url("notLogged"))
 
 @app.route('/delete/g/<int:g_id>/s/<int:s_id>')
 def deleteSong(g_id,s_id):
@@ -104,7 +123,9 @@ def deleteSong(g_id,s_id):
 def viewSong(g_id,s_id):
     song = conn.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
     if song:
-        return render_template('view.html',song = song)
+        state  = create_state()
+        name,email,img,logged = get_user_data()
+        return render_template('view.html',song = song,state = state,data = [name,email,img],logged = logged)
     else:
         return redirect(url_for('genreListView',error = 'dataNotFound'))
 
@@ -180,7 +201,7 @@ def Gdisconnect():
     access_token = session['credentials']
     if access_token is None:
         print 'Access Token is None'
-        response = make_response(json.dumps({'state' : 'notConnected'}), 401)
+        response = make_response(json.dumps({'state' : 'notConnected'}), 200)
     	response.headers['Content-Type'] = 'application/json'
     	return response
     url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
@@ -199,7 +220,7 @@ def Gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     else:
-        response = make_response(json.dumps({'state': 'errorRevoke'}),401)
+        response = make_response(json.dumps({'state': 'errorRevoke'}),200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
