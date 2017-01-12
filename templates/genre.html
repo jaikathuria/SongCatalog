@@ -5,7 +5,7 @@
 			<div class="row margin-top-5">
 				<div class="col m8 offset-m2 s12">
 					<div class="card-panel translusent-white z-depth-5 center-align">
-						<h4 class="translusent-black-text no-margin">{{ genre.name }}</h4>
+						<a href="{{ url_for('genreListView')}}"><h4 class="translusent-black-text no-margin">{{ genre.name }}</h4></a>
 					</div>
 					<div class="card-panel translusent-white z-depth-5">
 						<div class="row white-text f-200">
@@ -16,11 +16,11 @@
                                    <div class="collapsible-body no-border white-text">
                                       <p>{{ song.description }}<br><br>
                                        <a class="white-text" href="{{ url_for('viewSong',g_id = genre.id ,s_id = song.id) }}"> <i class="fa fa-play-circle" aria-hidden="true"></i> Play </a> &nbsp;|&nbsp;
-                                       <a class="white-text" href="{{ url_for('editSong',g_id = genre.id,s_id = song.id) }}"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit </a> 
-                                       &nbsp;|&nbsp; 
-                                       <a class="white-text" href="{{ url_for('deleteSong',g_id = genre.id,s_id = song.id) }}"> <i class="fa fa-trash-o" aria-hidden="true"></i> Delete </a> 
+                                       <a class="white-text" href="{{ url_for('editSong',g_id = genre.id,s_id = song.id) }}"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit </a>
+                                       &nbsp;|&nbsp;
+                                       <a class="white-text" href="{{ url_for('deleteSong',g_id = genre.id,s_id = song.id) }}"> <i class="fa fa-trash-o" aria-hidden="true"></i> Delete </a>
                                   </div>
-                                    
+
                                 </li>
                                 {% endfor %}
                             </ul>
