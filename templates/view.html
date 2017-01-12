@@ -11,8 +11,9 @@
                         <div class="card-panel translusent-black white-text z-depth-4 ani-shadow f-200">
                             <span>{{ song.name }}</span>
                             <span class="right">
-                                <a class="white-text" href="{{ url_for('editSong',g_id = song.g_id,s_id = song.id) }}"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit </a> 
-                                <a class="white-text" href="{{ url_for('deleteSong',g_id = song.g_id,s_id = song.id) }}"> <i class="fa fa-trash-o" aria-hidden="true"></i> Delete </a> 
+                                <a class="white-text" href="{{ url_for('genreView', gid = song.g_id)}}"> <i class="fa fa-reply" aria-hidden="True"></i> Genre </a>
+                                <a class="white-text" href="{{ url_for('editSong',g_id = song.g_id,s_id = song.id) }}"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit </a>
+                                <a class="white-text" href="{{ url_for('deleteSong',g_id = song.g_id,s_id = song.id) }}"> <i class="fa fa-trash-o" aria-hidden="true"></i> Delete </a>
                             </span>
                         </div>
 					</div>
