@@ -22,7 +22,8 @@ var messages = {
     "incompleteFields": "Fill out all required fields!",
     "notConnected": "User Already Disconnected",
     "successLogout": "User Successfully Logged Out",
-    "notLogged" : "User Not Logged In"
+    "notLogged" : "User Not Logged In",
+    "notAuth" : "App not authenticated"
 };
 
 $('.button-collapse').sideNav({
@@ -38,7 +39,7 @@ $('.button-collapse').sideNav({
   );
 
 $(document).ready(function(){
-    
+
     $('.modal').modal();
 
     $('.ani-shadow').hover(function(){
@@ -69,8 +70,30 @@ $(document).ready(function(){
 
         }
 
+        $("#fbSignIn").click(function(){
+            FB.login(function(response){
+              checkFBStatus();
+            },{scope: 'email,public_profile'})
+        });
 
  });
+
+
+var checkFBStatus = function(){
+  FB.getLoginStatus(function(response) {
+      if (response.status === 'connected') {
+        var accessToken = response.authResponse.accessToken;
+        fbSignInCallback(accessToken);
+      } else if (response.status === 'not_authorized') {
+        var error = messages['notAuth'];
+        Materialize.toast(error, 10000);
+      } else {
+        var error = messages['notLogged'];
+        Materialize.toast(error, 10000);
+      }
+    });
+};
+
 
 var googleSignInCallback = function(authResult){
     if (authResult['code']){
