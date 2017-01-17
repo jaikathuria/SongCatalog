@@ -13,7 +13,26 @@
 		<meta name="google-signin-client_id" content="212153352565-f1ti6kcpb65frgfv2uatthhdukdsjtmd.apps.googleusercontent.com">
 	</head>
 	<body>
-		<div class="bg" id="bg1"></div>
+		<script>
+			  window.fbAsyncInit = function() {
+			    FB.init({
+			      appId      : '308983429503159',
+			      xfbml      : true,
+			      version    : 'v2.8'
+			    });
+			    FB.AppEvents.logPageView();
+			  };
+
+			  (function(d, s, id){
+			     var js, fjs = d.getElementsByTagName(s)[0];
+			     if (d.getElementById(id)) {return;}
+			     js = d.createElement(s); js.id = id;
+			     js.src = "//connect.facebook.net/en_US/sdk.js";
+			     fjs.parentNode.insertBefore(js, fjs);
+			   }(document, 'script', 'facebook-jssdk'));
+			</script>
+		<div class="bg" id="bg1"></div>.
+
 		<ul id="slide-out" class="side-nav translusent-white darken-2 z-depth-3">
 			<li>
 				<div class="userView">
@@ -38,12 +57,12 @@
            <div class="container">
              <div class="row">
                  <div class="col m4 offset-m2 s12">
-                   <div class="card-panel translusent-facebook z-depth-5 center-align">
+                   <div id="fbSignIn" class="card-panel translusent-facebook z-depth-5 center-align">
                         <h5 class="white-text f-200 no-margin">Connect With  <i class="fa fa-facebook" aria-hidden="true"></i></h5>
                     </div>
                   </div>
                   <div class="col m4 s12">
-                  <div id="googleSignIn" class="card-panel translusent-gplus z-depth-5 center-align">
+                  	<div id="googleSignIn" class="card-panel translusent-gplus z-depth-5 center-align">
                         <h5 class="white-text f-200 no-margin">Connect With  <i class="fa fa-google-plus" aria-hidden="true"></i></h5>
                     </div>
                   </div>
