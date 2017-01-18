@@ -37,9 +37,9 @@
 			<li>
 				<div class="userView">
 				    <div class="background"></div>
-					<a><img id="userImg" src="{{ data[2]}}" class="circle"></a>
-					<a><span id="userName" class="white-text name">{{ data[0] }}</span></a>
-					<a><span id="userEmail" class="white-text email f-100">{{ data[1] }}</span></a>
+					<a><img id="userImg" src="{{ session['img'] }}" class="circle"></a>
+					<a><span id="userName" class="white-text name">{{ session['name'] }}</span></a>
+					<a><span id="userEmail" class="white-text email f-100">{{ session['email'] }}</span></a>
 				</div>
       </li>
 			<li><a href="{{ url_for('newSong') }}" class="waves-effect"><i class="fa fa-plus-circle" aria-hidden="true"></i> New Item </a></li>
@@ -73,7 +73,7 @@
 		<!--Import jQuery before materialize.js-->
     <script>
 				var state = '{{state}}'
-				var logged = {{ logged }}
+				var logged = '{{ session['provider'] }}'
 		</script>
 		<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 		<script src="https://apis.google.com/js/platform.js"></script>
