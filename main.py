@@ -244,6 +244,15 @@ def logout():
         return response
 
 
+@app.route('/fbdisconnect')
+def FBdisconnect():
+    f_id = session['id']
+    access_token = session['credentials']
+    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (f_id,access_token)
+    h = httplib2.Http()
+    result = h.request(url, 'DELETE')[1]
+    print result
+
 @app.route('/gdisconnect')
 def Gdisconnect():
     print "gdisconnect"
