@@ -236,6 +236,13 @@ def fbConnect():
 def logout():
     if session.get('provider') == 'google':
         return Gdisconnect()
+    elif session.get('provider') == 'facebook':
+        return FBdisconnect()
+    else:
+        response.make_response(json.dumps({'state' : 'notConnected'}), 200)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+
 
 @app.route('/gdisconnect')
 def Gdisconnect():
