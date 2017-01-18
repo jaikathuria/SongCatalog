@@ -79,6 +79,32 @@ $(document).ready(function(){
 
  });
 
+var fbSignInCallback = function(token){
+  $.ajax({
+      type: 'POST',
+      url: '/fbconnect?state=' + state,
+      processData: false,
+      contentType: 'application/json',
+      data: token,
+      success: function(result){
+          if(result){
+              var img = result['img'].replace('https','http');
+              hide.login();
+              $('#userImg').attr('src',img);
+              $('#userName').html(result['name']);
+              $('#userEmail').html(result['email']);
+              logged = 'facebook';
+          }
+          else if (authResult['error']){
+              console.log("Following Error Occured:" + authResult['error']);
+          }
+          else{
+              console.log('Failed to make connection with server, Please check your internet connection.');
+          }
+      }
+  });
+
+};
 
 
 var checkFBStatus = function(){
