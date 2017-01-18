@@ -10,11 +10,11 @@ var hide = {
 
     }
 }
-if(logged){
-  hide.login();
+if((logged == 'null')||(logged=='')){
+  hide.user();
 }
 else{
-  hide.user();
+  hide.login();
 }
 
 var messages = {
@@ -23,7 +23,8 @@ var messages = {
     "notConnected": "User Already Disconnected",
     "successLogout": "User Successfully Logged Out",
     "notLogged" : "User Not Logged In",
-    "notAuth" : "App not authenticated"
+    "notAuth" : "App not authenticated",
+    "invalidState": "Invalid State Token"
 };
 
 $('.button-collapse').sideNav({
@@ -79,6 +80,7 @@ $(document).ready(function(){
  });
 
 
+
 var checkFBStatus = function(){
   FB.getLoginStatus(function(response) {
       if (response.status === 'connected') {
@@ -110,7 +112,7 @@ var googleSignInCallback = function(authResult){
                     $('#userImg').attr('src',img);
                     $('#userName').html(result['name']);
                     $('#userEmail').html(result['email']);
-                    logged = 1;
+                    logged = 'google';
                 }
                 else if (authResult['error']){
                     console.log("Following Error Occured:" + authResult['error']);
@@ -125,7 +127,7 @@ var googleSignInCallback = function(authResult){
 
 var logout = function(){
 
-   if(logged){
+   if((logged == 'facebook')||(logged=='google')){
 
     $.ajax({
 
