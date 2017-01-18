@@ -38,16 +38,14 @@ def previous_url(error=False):
 def genreListView():
     genreList = conn.query(Genre).all()
     state  = create_state()
-    name,email,img,logged = get_user_data()
-    return render_template('genreList.html',genres = genreList, state = state,data = [name,email,img],logged = logged)
+    return render_template('genreList.html',genres = genreList, state = state)
 
 @app.route('/genre/<int:gid>/')
 def genreView(gid):
     genre = conn.query(Genre).filter_by(id = gid).one()
     songList = conn.query(Songs).filter_by(g_id = gid)
     state  = create_state()
-    name,email,img,logged = get_user_data()
-    return render_template('genre.html',songs = songList,genre = genre, state = state,data = [name,email,img],logged = logged)
+    return render_template('genre.html',songs = songList,genre = genre, state = state)
 
 @app.route('/new/',methods=['get','post'])
 def newSong():
@@ -72,8 +70,7 @@ def newSong():
             return redirect(url_for('newSong',error='incompletefields'))
     genreList = conn.query(Genre).all()
     state  = create_state()
-    name,email,img,logged = get_user_data()
-    return render_template('edit.html',genres = genreList, state = state,data = [name,email,img],logged = logged)
+    return render_template('edit.html',genres = genreList, state = state)
 
 @app.route('/edit/g/<int:g_id>/s/<int:s_id>',methods=['get','post'])
 def editSong(g_id,s_id):
@@ -100,11 +97,10 @@ def editSong(g_id,s_id):
         else:
             return redirect(url_for('newSong',error='incompleteFields'))
     state  = create_state()
-    name,email,img,logged = get_user_data()
-    if(logged):
+    if(session['provider']!='null'):
         genreList = conn.query(Genre).all()
         song = conn.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
-        return render_template('edit.html',genres = genreList,song = song,state = state,data = [name,email,img],logged = logged)
+        return render_template('edit.html',genres = genreList,song = song,state = state)
     else:
         return redirect(previous_url("notLogged"))
 
@@ -124,8 +120,7 @@ def viewSong(g_id,s_id):
     song = conn.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
     if song:
         state  = create_state()
-        name,email,img,logged = get_user_data()
-        return render_template('view.html',song = song,state = state,data = [name,email,img],logged = logged)
+        return render_template('view.html',song = song,state = state)
     else:
         return redirect(url_for('genreListView',error = 'dataNotFound'))
 
@@ -175,7 +170,7 @@ def gConnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     session['credentials'] = access_token
-    session['gplus_id'] = gplus_id
+    session['id'] = gplus_id
 
     userinfo_url = "https://www.googleapis.com/oauth2/v1/userinfo"
     params = {'access_token': access_token, 'alt': 'json'}
@@ -211,7 +206,7 @@ def Gdisconnect():
     print result
     if result['status'] == '200':
         del session['credentials']
-        del session['gplus_id']
+        del session['id']
         del session['name']
         del session['email']
         del session['img']
@@ -223,14 +218,6 @@ def Gdisconnect():
         response = make_response(json.dumps({'state': 'errorRevoke'}),200)
         response.headers['Content-Type'] = 'application/json'
         return response
-
-
-def get_user_data():
-    if session.has_key('provider'):
-        if session['provider'] != 'null':
-            return session['name'], session['email'], session['img'], 1
-    return "", "", "", 0
-
 
 
 def create_state():
