@@ -185,6 +185,53 @@ def gConnect():
     return jsonify(name = session['name'],email = session['email'], img = session['img'])
 
 
+@app.route('/fbconnect', methods = ['post'])
+def fbConnect():
+    if request.args.get('state') != session['state']:
+        response.make_response(json.dumps({'state' : 'invalidState'}), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+    access_token = request.data
+    app_id = json.loads(open('client_secret_fb.json', 'r').read())[
+        'web']['app_id']
+    app_secret = json.loads(
+        open('client_secret_fb.json', 'r').read())['web']['app_secret']
+    url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (
+        app_id, app_secret, access_token)
+    h = httplib2.Http()
+    result = h.request(url, 'GET')[1]
+
+    # Use token to get user info from API
+    userinfo_url = "https://graph.facebook.com/v2.4/me"
+    # strip expire tag from access token
+    token = result.split("&")[0]
+
+
+    url = 'https://graph.facebook.com/v2.4/me?%s&fields=name,id,email' % token
+    h = httplib2.Http()
+    result = h.request(url, 'GET')[1]
+    # print "url sent for API access:%s"% url
+    # print "API JSON result: %s" % result
+    data = json.loads(result)
+    session['provider'] = 'facebook'
+    session['name'] = data["name"]
+    session['email'] = data["email"]
+    session['id'] = data["id"]
+    # The token must be stored in the login_session in order to properly logout, let's strip out the information before the equals sign in our token
+    stored_token = token.split("=")[1]
+    session['credentials'] = stored_token
+
+    # Get user picture
+    url = 'https://graph.facebook.com/v2.4/me/picture?%s&redirect=0&height=150&width=150' % token
+    h = httplib2.Http()
+    result = h.request(url, 'GET')[1]
+    data = json.loads(result)
+
+    session['img'] = data["data"]["url"]
+
+    return jsonify(name = session['name'],email = session['email'], img = session['img'])
+
+
 @app.route('/logout', methods = ['post'])
 def logout():
     if session.get('provider') == 'google':
