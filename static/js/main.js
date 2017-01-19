@@ -163,10 +163,8 @@ var logout = function(){
       contentType: 'application/json',
       success: function(result){
         if(result['state'] == 'loggedOut'){
-          var error = messages['successLogout'];
-          Materialize.toast(error, 10000);
-          logged = 0;
-          hide.user();
+          console.log(window.location.href + "?error=" + "successLogout");
+          window.location = window.location.href + "?error=" + "successLogout";
         }
         else if (result['state'] == 'notConnected'){
           var error = messages['notConnected'];
