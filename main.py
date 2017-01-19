@@ -129,6 +129,12 @@ def viewSong(g_id,s_id):
     else:
         return redirect(url_for('genreListView',error = 'dataNotFound'))
 
+    
+    
+@app.route('/genre.json')
+def genreListJson():
+    genreList = conn.query(Genre).all()
+    return jsonify(genres = [genre.serialize for genre in genreList])
 
 
 
