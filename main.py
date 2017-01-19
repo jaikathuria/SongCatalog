@@ -323,6 +323,16 @@ def check_user():
     return conn.query(User).filter_by(email = email).one_or_none()
     
     
+def add_user():
+    user = User()
+    user.name = session['name']
+    user.email = session['email']
+    user.url = session['url']
+    user.provider = session['provider']
+    conn.add(user)
+    conn.commit()
+    
+    
 def create_state():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
     session['state'] = state
