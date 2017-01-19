@@ -150,6 +150,7 @@ def songJson(g_id,s_id):
     return jsonify(song = song.serialize)
 
 
+
 @app.route('/gconnect', methods = ['post'])
 def gConnect():
     if request.args.get('state') != session['state']:
@@ -317,7 +318,11 @@ def Gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     
-
+def check_user():
+    email = session['email']
+    return conn.query(User).filter_by(email = email).one_or_none()
+    
+    
 def create_state():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
     session['state'] = state
