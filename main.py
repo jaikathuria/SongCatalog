@@ -138,6 +138,12 @@ def genreListJson():
 
 
 
+@app.route('/genre/<int:gid>.json')
+def songListJson(gid):
+    songList = conn.query(Songs).filter_by(g_id = gid)
+    return jsonify(songs = [song.serialize for song in songList])
+
+
 @app.route('/gconnect', methods = ['post'])
 def gConnect():
     if request.args.get('state') != session['state']:
