@@ -41,6 +41,10 @@ class Songs(Base):
     description = Column(String())
     url = Column(String(250),nullable = False)
     g_id = Column(Integer, ForeignKey('genre.id'))
+    genre = relationship(Genre)
+    u_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
+    
 
     @property
     def serialize(self):
