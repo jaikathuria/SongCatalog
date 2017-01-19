@@ -15,6 +15,7 @@ class User(Base):
     name = Column(String(250), nullable=False)
     email = Column(String(250), nullable=False)
     picture = Column(String(250))
+    provider = Column(String(15))
 
 
 class Genre(Base):
@@ -22,6 +23,14 @@ class Genre(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(80), nullable = False)
+
+    @property
+    def serialize(self):
+	   """return object data in easily serializeable format"""
+	   return {
+	   		'name'		:	self.name,
+	   		'id'		:	self.id
+	   }
 
 
 class Songs(Base):
@@ -32,6 +41,15 @@ class Songs(Base):
     description = Column(String())
     url = Column(String(250),nullable = False)
     g_id = Column(Integer, ForeignKey('genre.id'))
+
+    @property
+    def serialize(self):
+       return {
+           'id'           : self.id,
+           'name'         : self.name,
+           'description'  : self.description,
+           'youtube_url'  : self.url
+       }
 
 
 engine = create_engine('sqlite:///MusicDatabase.db')
