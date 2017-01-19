@@ -34,11 +34,13 @@ def previous_url(error=False):
         return redirect_url() + "?error=" + error
     return redirect_url()
 
+
 @app.route('/')
 def genreListView():
     genreList = conn.query(Genre).all()
     state  = create_state()
     return render_template('genreList.html',genres = genreList, state = state)
+
 
 @app.route('/genre/<int:gid>/')
 def genreView(gid):
@@ -46,6 +48,7 @@ def genreView(gid):
     songList = conn.query(Songs).filter_by(g_id = gid)
     state  = create_state()
     return render_template('genre.html',songs = songList,genre = genre, state = state)
+
 
 @app.route('/new/',methods=['get','post'])
 def newSong():
@@ -71,6 +74,7 @@ def newSong():
     genreList = conn.query(Genre).all()
     state  = create_state()
     return render_template('edit.html',genres = genreList, state = state)
+
 
 @app.route('/edit/g/<int:g_id>/s/<int:s_id>',methods=['get','post'])
 def editSong(g_id,s_id):
@@ -104,6 +108,7 @@ def editSong(g_id,s_id):
     else:
         return redirect(previous_url("notLogged"))
 
+    
 @app.route('/delete/g/<int:g_id>/s/<int:s_id>')
 def deleteSong(g_id,s_id):
     song = conn.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
@@ -123,6 +128,9 @@ def viewSong(g_id,s_id):
         return render_template('view.html',song = song,state = state)
     else:
         return redirect(url_for('genreListView',error = 'dataNotFound'))
+
+
+
 
 @app.route('/gconnect', methods = ['post'])
 def gConnect():
@@ -228,7 +236,7 @@ def fbConnect():
     data = json.loads(result)
 
     session['img'] = data["data"]["url"]
-
+    
     return jsonify(name = session['name'],email = session['email'], img = session['img'])
 
 
@@ -251,7 +259,16 @@ def FBdisconnect():
     url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (f_id,access_token)
     h = httplib2.Http()
     result = h.request(url, 'DELETE')[1]
-    print result
+    del session['credentials']
+    del session['id']
+    del session['name']
+    del session['email']
+    del session['img']
+    session['provider'] = 'null'
+    response = make_response(json.dumps({'state': 'loggedOut'}),200)
+    response.headers['Content-Type'] = 'application/json'
+    return response
+
 
 @app.route('/gdisconnect')
 def Gdisconnect():
@@ -281,7 +298,7 @@ def Gdisconnect():
         response = make_response(json.dumps({'state': 'errorRevoke'}),200)
         response.headers['Content-Type'] = 'application/json'
         return response
-
+    
 
 def create_state():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
