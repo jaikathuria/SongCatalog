@@ -26,7 +26,7 @@ APPLICATION_NAME = "ItemCatalog"
 def redirect_url(default='index'):
     return request.args.get('next') or \
            request.referrer or \
-           url_for(default)
+           url_for('genreListView')
 
 
 def previous_url(error=False):
@@ -53,27 +53,34 @@ def genreView(gid):
 @app.route('/new/',methods=['get','post'])
 def newSong():
     if request.method == 'POST':
-        name = request.form['name']
-        desc = request.form['desc']
-        url =  request.form['url']
-        url = url.replace('watch?v=','embed/')
-        url = url.replace('https://','//')
-        g_id = request.form['genre']
-        if name and url and g_id:
-            song = Songs()
-            song.name = name
-            song.g_id = g_id
-            song.url = url
-            if desc:
-                song.description = desc
-            conn.add(song)
-            conn.commit()
-            return redirect(url_for('genreView',gid = g_id))
+        if 'provider' in session and session['provider']!= 'null':
+            name = request.form['name']
+            desc = request.form['desc']
+            url =  request.form['url']
+            url = url.replace('watch?v=','embed/')
+            url = url.replace('https://','//')
+            g_id = request.form['genre']
+            if name and url and g_id:
+                song = Songs()
+                song.name = name
+                song.g_id = g_id
+                song.url = url
+                if desc:
+                    song.description = desc
+                conn.add(song)
+                conn.commit()
+                return redirect(url_for('genreView',gid = g_id))
+            else:
+                return redirect(url_for('newSong',error='incompletefields'))
         else:
-            return redirect(url_for('newSong',error='incompletefields'))
-    genreList = conn.query(Genre).all()
-    state  = create_state()
-    return render_template('edit.html',genres = genreList, state = state)
+            return redirect(previous_url("notLogged"))
+    if session.has_key('provider') and session['provider']!= 'null':
+        genreList = conn.query(Genre).all()
+        state  = create_state()
+        return render_template('edit.html',genres = genreList, state = state)
+    else:
+        return redirect(previous_url("notLogged"))
+        
 
 
 @app.route('/edit/g/<int:g_id>/s/<int:s_id>',methods=['get','post'])
