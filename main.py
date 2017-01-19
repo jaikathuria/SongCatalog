@@ -209,6 +209,8 @@ def gConnect():
     session['img'] = data['picture']
     session['email'] = data['email']
     session['provider'] = 'google'
+    if not check_user():
+        add_user()
     return jsonify(name = session['name'],email = session['email'], img = session['img'])
 
 
@@ -255,7 +257,9 @@ def fbConnect():
     data = json.loads(result)
 
     session['img'] = data["data"]["url"]
-    
+    if not check_user():
+        add_user()
+        
     return jsonify(name = session['name'],email = session['email'], img = session['img'])
 
 
