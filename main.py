@@ -60,11 +60,13 @@ def newSong():
             url = url.replace('watch?v=','embed/')
             url = url.replace('https://','//')
             g_id = request.form['genre']
+            u_id = check_user().id
             if name and url and g_id:
                 song = Songs()
                 song.name = name
                 song.g_id = g_id
                 song.url = url
+                song.u_id = u_id
                 if desc:
                     song.description = desc
                 conn.add(song)
