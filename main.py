@@ -53,7 +53,7 @@ def genreView(gid):
 @app.route('/new/',methods=['get','post'])
 def newSong():
     if request.method == 'POST':
-        if 'provider' in session and session['provider']!= 'null':
+        if session.has_key('provider') and session['provider']!= 'null':
             name = request.form['name']
             desc = request.form['desc']
             url =  request.form['url']
@@ -80,52 +80,57 @@ def newSong():
         return render_template('edit.html',genres = genreList, state = state)
     else:
         return redirect(previous_url("notLogged"))
-        
+
 
 
 @app.route('/edit/g/<int:g_id>/s/<int:s_id>',methods=['get','post'])
 def editSong(g_id,s_id):
     if request.method == 'POST':
-        name = request.form['name']
-        desc = request.form['desc']
-        url =  request.form['url']
-        url = url.replace('watch?v=','embed/')
-        url = url.replace('https://','//')
-        gid = request.form['genre']
-        if name and url and gid:
-            song = conn.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
-            if song:
-                song.name = name
-                song.g_id = gid
-                song.url = url
-                if desc:
-                    song.description = desc
-                conn.add(song)
-                conn.commit()
-                return redirect(url_for('genreView',gid = gid))
+        if session.has_key('provider') and session['provider']!= 'null':
+            name = request.form['name']
+            desc = request.form['desc']
+            url =  request.form['url']
+            url = url.replace('watch?v=','embed/')
+            url = url.replace('https://','//')
+            gid = request.form['genre']
+            if name and url and gid:
+                song = conn.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
+                if song:
+                    song.name = name
+                    song.g_id = gid
+                    song.url = url
+                    if desc:
+                        song.description = desc
+                    conn.add(song)
+                    conn.commit()
+                    return redirect(url_for('genreView',gid = gid))
+                else:
+                    return redirect(url_for('genreListView',error = 'dataNotFound'))
             else:
-                return redirect(url_for('genreListView',error = 'dataNotFound'))
+                return redirect(url_for('newSong',error='incompleteFields'))
         else:
-            return redirect(url_for('newSong',error='incompleteFields'))
-    state  = create_state()
-    if(session['provider']!='null'):
-        genreList = conn.query(Genre).all()
-        song = conn.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
-        return render_template('edit.html',genres = genreList,song = song,state = state)
-    else:
-        return redirect(previous_url("notLogged"))
+            return redirect(previous_url("notLogged"))
+        state  = create_state()
+        if session.has_key('provider') and session['provider']!= 'null':
+            genreList = conn.query(Genre).all()
+            song = conn.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
+            return render_template('edit.html',genres = genreList,song = song,state = state)
+        else:
+            return redirect(previous_url("notLogged"))
 
-    
+
 @app.route('/delete/g/<int:g_id>/s/<int:s_id>')
 def deleteSong(g_id,s_id):
-    song = conn.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
-    if song:
-        conn.delete(song)
-        conn.commit()
-        return redirect(url_for('genreView',gid = g_id))
+    if session.has_key('provider') and session['provider']!= 'null':
+        song = conn.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
+        if song:
+            conn.delete(song)
+            conn.commit()
+            return redirect(url_for('genreView',gid = g_id))
+        else:
+            return redirect(url_for('genreListView',error = 'dataNotFound'))
     else:
-        return redirect(url_for('genreListView',error = 'dataNotFound'))
-
+        return redirect(previous_url("notLogged"))
 
 @app.route('/view/g/<int:g_id>/s/<int:s_id>')
 def viewSong(g_id,s_id):
@@ -136,8 +141,8 @@ def viewSong(g_id,s_id):
     else:
         return redirect(url_for('genreListView',error = 'dataNotFound'))
 
-    
-    
+
+
 @app.route('/genre.json')
 def genreListJson():
     genreList = conn.query(Genre).all()
@@ -264,9 +269,10 @@ def fbConnect():
     data = json.loads(result)
 
     session['img'] = data["data"]["url"]
+
     if not check_user():
         add_user()
-        
+
     return jsonify(name = session['name'],email = session['email'], img = session['img'])
 
 
@@ -328,22 +334,22 @@ def Gdisconnect():
         response = make_response(json.dumps({'state': 'errorRevoke'}),200)
         response.headers['Content-Type'] = 'application/json'
         return response
-    
+
 def check_user():
     email = session['email']
     return conn.query(User).filter_by(email = email).one_or_none()
-    
-    
+
+
 def add_user():
     user = User()
     user.name = session['name']
     user.email = session['email']
-    user.url = session['url']
+    user.url = session['img']
     user.provider = session['provider']
     conn.add(user)
     conn.commit()
-    
-    
+
+
 def create_state():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
     session['state'] = state
