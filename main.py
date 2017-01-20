@@ -110,8 +110,10 @@ def editSong(g_id,s_id):
                 return redirect(url_for('newSong',error='incompleteFields'))
         else:
             return redirect(previous_url("notLogged"))
-        state  = create_state()
+
+    else:
         if session.has_key('provider') and session['provider']!= 'null':
+            state  = create_state()
             genreList = conn.query(Genre).all()
             song = conn.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
             return render_template('edit.html',genres = genreList,song = song,state = state)
@@ -190,6 +192,7 @@ def gConnect():
         return response
 
     gplus_id = credentials.id_token['sub']
+
     if result['user_id'] != gplus_id:
         response = make_response(
             json.dumps("Token's user ID doesn't match given user ID."), 401)
