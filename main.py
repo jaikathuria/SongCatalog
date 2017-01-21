@@ -95,17 +95,21 @@ def editSong(g_id,s_id):
             url = url.replace('watch?v=','embed/')
             url = url.replace('https://','//')
             gid = request.form['genre']
+            u_id = check_user().id
             if name and url and gid:
                 song = conn.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
                 if song:
-                    song.name = name
-                    song.g_id = gid
-                    song.url = url
-                    if desc:
-                        song.description = desc
-                    conn.add(song)
-                    conn.commit()
-                    return redirect(url_for('genreView',gid = gid))
+                    if song.u_id == u_id:
+                        song.name = name
+                        song.g_id = gid
+                        song.url = url
+                        if desc:
+                            song.description = desc
+                        conn.add(song)
+                        conn.commit()
+                        return redirect(url_for('genreView',gid = gid))
+                    else:
+                        return redirect(url_for('genreListView',error = 'wrongOwner'))
                 else:
                     return redirect(url_for('genreListView',error = 'dataNotFound'))
             else:
@@ -116,9 +120,13 @@ def editSong(g_id,s_id):
     else:
         if session.has_key('provider') and session['provider']!= 'null':
             state  = create_state()
+            u_id = check_user().id
             genreList = conn.query(Genre).all()
             song = conn.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
-            return render_template('edit.html',genres = genreList,song = song,state = state)
+            if song.u_id == u_id:
+                return render_template('edit.html',genres = genreList,song = song,state = state)
+            else:
+                return redirect(url_for('genreListView',error = 'wrongOwner'))
         else:
             return redirect(previous_url("notLogged"))
 
