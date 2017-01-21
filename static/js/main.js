@@ -24,7 +24,8 @@ var messages = {
     "successLogout": "User Successfully Logged Out",
     "notLogged" : "User Not Logged In",
     "notAuth" : "App not authenticated",
-    "invalidState": "Invalid State Token"
+    "invalidState": "Invalid State Token",
+    "wrongOwner": "Can't Modify Other's Data"
 };
 
 $('.button-collapse').sideNav({
