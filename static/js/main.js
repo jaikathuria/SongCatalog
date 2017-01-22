@@ -89,7 +89,7 @@ var fbSignInCallback = function(token){
       data: token,
       success: function(result){
           if(result){
-              var img = result['img'].replace('https','http');
+              var img = result['img'].replace('https:','/');
               hide.login();
               $('#userImg').attr('src',img);
               $('#userName').html(result['name']);
