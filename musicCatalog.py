@@ -2,9 +2,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, make_response, jsonify
 app = Flask(__name__)
 
-import sys
-sys.path.append('/var/www/catalog/')
-
 import random, string
 
 from oauth2client.client import flow_from_clientsecrets, FlowExchangeError, AccessTokenCredentials
@@ -24,7 +21,7 @@ DBSession = sessionmaker(bind = engine)
 conn = DBSession()
 
 CLIENT_ID = json.loads(
-    open('client_secret.json', 'r').read())['web']['client_id']
+    open('/var/www/catalog/client_secret.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "ItemCatalog"
 
 def redirect_url(default='index'):
@@ -250,7 +247,7 @@ def fbConnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     access_token = request.data
-    app_id = json.loads(open('client_secret_fb.json', 'r').read())[
+    app_id = json.loads(open('/var/www/catalog/client_secret_fb.json', 'r').read())[
         'web']['app_id']
     app_secret = json.loads(
         open('client_secret_fb.json', 'r').read())['web']['app_secret']
