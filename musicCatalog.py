@@ -13,7 +13,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from db_setup import Base, User, Genre, Songs
 # create engine connection with sql library
-engine = create_engine('sqlite:///MusicDatabase.db')
+engine = create_engine('postgresql://catalog:feef55cd@localhost/catalog')
 #bind the engine with base class
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind = engine)

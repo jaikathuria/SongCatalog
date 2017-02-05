@@ -44,7 +44,7 @@ class Songs(Base):
     genre = relationship(Genre)
     u_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
-    
+
 
     @property
     def serialize(self):
@@ -56,5 +56,5 @@ class Songs(Base):
        }
 
 
-engine = create_engine('sqlite:///MusicDatabase.db')
+engine = create_engine('postgresql://catalog:feef55cd@localhost/catalog')
 Base.metadata.create_all(engine)
