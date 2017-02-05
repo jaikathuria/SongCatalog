@@ -136,11 +136,15 @@ def editSong(g_id,s_id):
 @app.route('/delete/g/<int:g_id>/s/<int:s_id>')
 def deleteSong(g_id,s_id):
     if session.has_key('provider') and session['provider']!= 'null':
+        u_id = check_user().id
         song = conn.query(Songs).filter_by(id = s_id,g_id = g_id).one_or_none()
         if song:
-            conn.delete(song)
-            conn.commit()
-            return redirect(url_for('genreView',gid = g_id))
+            if song.u_id == u_id:
+                conn.delete(song)
+                conn.commit()
+                return redirect(url_for('genreView',gid = g_id))
+            else:
+                return redirect(url_for('genreListView',error = 'wrongOwner'))
         else:
             return redirect(url_for('genreListView',error = 'dataNotFound'))
     else:
