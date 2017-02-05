@@ -185,7 +185,7 @@ def gConnect():
         return response
     code = request.data
     try:
-        oauth_flow = flow_from_clientsecrets('client_secret.json',scope='')
+        oauth_flow = flow_from_clientsecrets('/var/www/catalog/client_secret.json',scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
