@@ -1,6 +1,10 @@
 # Imports Flask
 from flask import Flask, render_template, request, redirect, url_for, session, make_response, jsonify
 app = Flask(__name__)
+
+import sys
+sys.path.append('/var/www/catalog/')
+
 import random, string
 
 from oauth2client.client import flow_from_clientsecrets, FlowExchangeError, AccessTokenCredentials
