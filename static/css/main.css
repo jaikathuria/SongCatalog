@@ -109,6 +109,14 @@
     background-color: rgba(211, 72, 54,0.70);
 }
 
+.translusent-git {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.translusent-twitter {
+    background-color: rgba(0,132,180,0.7)
+}
+
 .f-100 {
     font-weight: 100 !important;
 }
