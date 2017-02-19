@@ -134,7 +134,7 @@ var googleSignInCallback = function(authResult){
             data: authResult['code'],
             success: function(result){
                 if(result){
-                    var img = result['img'].replace('https','http');
+                    var img = result['img'].replace('https','https');
                     hide.login();
                     $('#userImg').attr('src',img);
                     $('#userName').html(result['name']);
