@@ -49,5 +49,3 @@ After the last command you are able to browse the application at this URL:
 `http://localhost:8000/`
 
 It is important you use *localhost* instead of *0.0.0.0* inside the URL address. That will prevent OAuth from failing.
-
-## Live link to [Project](http://ec2-52-33-52-40.us-west-2.compute.amazonaws.com/). `Click to open` .
