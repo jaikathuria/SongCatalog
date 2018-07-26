@@ -1,5 +1,3 @@
-# FullStack-Project--5
-
 # SongCatalog
 
 ### Keypoints:
@@ -49,3 +47,7 @@ After the last command you are able to browse the application at this URL:
 `http://localhost:8000/`
 
 It is important you use *localhost* instead of *0.0.0.0* inside the URL address. That will prevent OAuth from failing.
+
+## Live App: [SongCatalog](https://songcatalog.herokuapp.com/)
+The current branch contains the version of the app, that uses SQLite3 along with SQLAlchemy. SQLite3 being file based DB can't be used on Platforms lile Heroku thus there is another branch called **Production** which uses Postgresql along with SQLAlchemy. The changes made in the production branch are in accordance to host the project on a EC2 instance, but now due to some issues with EC2 billing this project is moved to Heroku. 
+
